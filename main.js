@@ -33,8 +33,8 @@ const getWeather=async(cityName, ccode, scode, unit="metric")=>{
     const apiEndPoint=`${config.wURL}weather?q=${cityName},${scode.toLowerCase()},${ccode.toLowerCase()}&APPID=${config.wKey}&units=${unit}`;
     try {
         const response= await fetch(apiEndPoint);
-        if(response.status!=200){
-            if(response.status==404){
+        if(response.status != 200){
+            if(response.status == 404){
                 weatherDiv.innerHTML=`<div class="alert-danger">
                 <h3>Oops!! No data available</h3></div>`
 
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
         let statesOption="";
         if(states){
             stateListDropDown.disabled=false;
-            statesOption+=`<option value="">States</option>`;
+            statesOption += `<option value="">States</option>`;
             states.forEach(state => {
                 statesOption+=`<option value="${state.iso2}">${state.name}</option>`;
             });
@@ -133,9 +133,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     stateListDropDown.addEventListener('change', async function(){
         const selectedCountryCode=countryListDropDown.value;
         const selectedStateCode=this.value;
-        // console.log("selected State Code"+selectedStateCode);
         const cities= await getCountries("city",selectedCountryCode, selectedStateCode);
-        // console.log(cities);
         let citiesOption="";
         if(cities){
             cityListDropDown.disabled=false;
