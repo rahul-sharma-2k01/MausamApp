@@ -28,7 +28,7 @@ const getCountries=async(fieldName, ...args)=>{
     return countries;
 }
 
-//get weather info
+
 const getWeather=async(cityName, ccode, scode, unit="metric")=>{
     const apiEndPoint=`${config.wURL}weather?q=${cityName},${scode.toLowerCase()},${ccode.toLowerCase()}&APPID=${config.wKey}&units=${unit}`;
     try {
@@ -144,8 +144,6 @@ document.addEventListener('DOMContentLoaded',async()=>{
             cityListDropDown.innerHTML=citiesOption;
         }
     });
-
-    //select city
     cityListDropDown.addEventListener('change', async function(){
         const selectedCity=this.value;
         const selectedCountryCode=countryListDropDown.value;
