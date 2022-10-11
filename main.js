@@ -4,8 +4,6 @@ const config={
     wURL:"https://api.openweathermap.org/data/2.5/",
     wKey:"291e49940a62ae68120d245089422d0e",
 };
-
-//get countries
 const getCountries=async(fieldName, ...args)=>{
     let apiEndPoint;
     switch(fieldName){
@@ -22,13 +20,12 @@ const getCountries=async(fieldName, ...args)=>{
     }
     const response = await fetch(apiEndPoint, {headers:{"X-CSCAPI-KEY":config.cKey}});
     if(response.status!=200){
-        throw new Error(`Something went wrong, status code: ${response.status}`);
+        throw new Error(`${response.status}`);
     }
     const countries = await response.json();
     return countries;
 }
 
-//get weather info
 const getWeather=async(cityName, ccode, scode, unit="metric")=>{
     const apiEndPoint=`${config.wURL}weather?q=${cityName},${scode.toLowerCase()},${ccode.toLowerCase()}&APPID=${config.wKey}&units=${unit}`;
     try {
@@ -115,9 +112,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     //List States
     countryListDropDown.addEventListener('change', async function(){
         const selectedCountryCode=this.value;
-        // console.log("selected Country Code"+selectedCountryCode);
         const states= await getCountries("state", selectedCountryCode);
-        // console.log(states);
         let statesOption="";
         if(states){
             stateListDropDown.disabled=false;
@@ -154,7 +149,6 @@ document.addEventListener('DOMContentLoaded',async()=>{
         const selectedStateCode=stateListDropDown.value;
         weatherDiv.innerHTML=getLoader();
         const weatherInfo=await getWeather(selectedCity,selectedCountryCode,selectedStateCode);
-        // console.log(weatherInfo);
         displayWeather(weatherInfo); 
     }) ;
 
