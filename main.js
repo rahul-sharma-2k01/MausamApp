@@ -97,26 +97,24 @@ const stateListDropDown=document.querySelector("#stateList");
 const cityListDropDown=document.querySelector("#cityList");
 const weatherDiv=document.querySelector("#weather-widget");
 
-//On content load
 document.addEventListener('DOMContentLoaded',async()=>{
     const countries= await getCountries("country");
     let countriesOption="";
     if(countries){
-        countriesOption+=`<option value="">Country</option>`;
+        countriesOption+=`<option value=" ">Country</option>`;
         countries.forEach(country => {
             countriesOption+=`<option value="${country.iso2}">${country.name}</option>`;
         });
         countryListDropDown.innerHTML=countriesOption;
     }
 
-    //List States
     countryListDropDown.addEventListener('change', async function(){
         const selectedCountryCode=this.value;
         const states= await getCountries("state", selectedCountryCode);
         let statesOption="";
         if(states){
             stateListDropDown.disabled=false;
-            statesOption+=`<option value="">States</option>`;
+            statesOption+=`<option value=" ">States</option>`;
             states.forEach(state => {
                 statesOption+=`<option value="${state.iso2}">${state.name}</option>`;
             });
@@ -128,9 +126,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     stateListDropDown.addEventListener('change', async function(){
         const selectedCountryCode=countryListDropDown.value;
         const selectedStateCode=this.value;
-        // console.log("selected State Code"+selectedStateCode);
         const cities= await getCountries("city",selectedCountryCode, selectedStateCode);
-        // console.log(cities);
         let citiesOption="";
         if(cities){
             cityListDropDown.disabled=false;
@@ -159,12 +155,10 @@ document.addEventListener('DOMContentLoaded',async()=>{
             const selectedCountryCode=countryListDropDown.value;
             const selectedStateCode=stateListDropDown.value;
             const selectedCity=cityListDropDown.value;
-            const unitFlag=(unitValue=="far")?"imperial":"metric";
+            const unitFlag="metric";
             const weatherInfo=await getWeather(selectedCity,selectedCountryCode,selectedStateCode, unitFlag);
             const weatherTemp=tempCard(weatherInfo.main, unitValue);
             document.querySelector("#temp-card").innerHTML=weatherTemp;
-
-            //active unit
             document.querySelectorAll(".unitlink").forEach((link)=>{
                 link.classList.remove('active');
             })
